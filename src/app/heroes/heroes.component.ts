@@ -1,33 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { Hero } from '../hero';
-import { HeroService } from '../hero.service';
-import { Observable, of } from 'rxjs';
+import { HeroService } from '../services/hero.service';
+import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'app-heroes',
   templateUrl: './heroes.component.html',
-  styleUrls: ['./heroes.component.css'],
+  styleUrls: ['./heroes.component.css']
 })
 
-export class HeroesComponent {
+export class HeroesComponent implements OnInit {
+  heroes: Hero[] = [];
 
-  heroes : Hero[]= [];          // empty array
-  selectedHero!: Hero;            // hero property
+  constructor(private heroService: HeroService) { }
 
-  onSelect(hero: Hero): void {        //click on hero
-    this.selectedHero = hero;
+  ngOnInit(): void {
+    this.getHeroes();
   }
 
-  ngOnInit():void{
-this.getHeroes();
-    // this.selectedHero =  hero;
-      // this.messageService.add(`HeroesComponent:Selected Hero id = $(hero.id)`);
+  getHeroes(): void {
+    this.heroService.getHeroes()
+    .subscribe(heroes => this.heroes = heroes);
   }
-constructor(private heroService:HeroService){}
-
-getHeroes(): void{
-  // this.heroes = this.heroService.getHeroes();
 }
-
-}
-
